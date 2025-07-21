@@ -4,22 +4,16 @@
         <p><button type="button" class="btn btn-primary" @click="goToNew()">Nuevo</button></p>
         <div class="mb-3">
             <div class="input-group">
-                <span class="input-group-text" id="basic-addon3">Filtrar por Nombre</span>
-                <select v-model="marcaSeleccionado" id="address" class="form-select">
-                    <option disabled value="">-- Selecciona --</option>
-                    <option value="">Todos</option>
-                    <option v-for="name in marcas" :key="name" :value="name">
-                        {{ name }}
-                    </option>
-                </select>
+                <span class="input-group-text" id="basic-addon3" >Buscar por Nombre</span>
+                <input type="search" v-model="nombreAbuscar"  class="form-control">
             </div>
         </div>
         <div class="mb-3">
             <div class="input-group">
-                <span class="input-group-text" id="basic-addon3" >Buscar por Nombre o Correo</span>
-                <input type="search" v-model="nombreAbuscar"  class="form-control">
+                <span class="input-group-text" id="basic-addon3" >Buscar por Correo</span>
+                <input type="search" v-model="correoAbuscar"  class="form-control">
             </div>
-        </div>
+        </div>        
         <div>
             <table class="table table-bordered border-primary">
                 <thead>
@@ -148,6 +142,7 @@ export default {
             ],
             marcaSeleccionado: "",
             nombreAbuscar:"",
+            correoAbuscar:"",
             modalMode:"crear"
         }
     },
@@ -225,11 +220,19 @@ export default {
                 result = this.items.filter((item) => { return item.name === this.marcaSeleccionado; });
             }
 
-            if(this.anioAbuscar !== ""){
+            if(this.nombreAbuscar !== ""){
                 result = result.filter((item) => { 
-                    const _marca = item.modelo || "";
+                    const _name = item.name || "";
                     const _textToSearch = this.nombreAbuscar || "";
-                    return _marca.toLowerCase().includes(_textToSearch.toLocaleLowerCase()); 
+                    return _name.toLowerCase().includes(_textToSearch.toLocaleLowerCase()); 
+                });
+            }
+
+            if(this.correoAbuscar !== ""){
+                result = result.filter((item) => { 
+                    const _email = item.email || "";
+                    const _textToSearch = this.correoAbuscar || "";
+                    return _email.toLowerCase().includes(_textToSearch.toLocaleLowerCase()); 
                 });
             }
 
